@@ -6,20 +6,11 @@ server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind(("0.0.0.0", 5000))
 server.listen()
 connection, address = server.accept()
-from cryptography.hazmat.primitives.asymmetric.x25519 import (
-    X25519PrivateKey,
-    X25519PublicKey,
-)
-from cryptography.hazmat.primitives.serialization import (
-    Encoding,
-    PublicFormat,
-)
+from cryptography.hazmat.primitives.asymmetric.x25519 import (X25519PrivateKey,X25519PublicKey,)
+from cryptography.hazmat.primitives.serialization import (Encoding,PublicFormat,)
 bpriv=X25519PrivateKey.generate()
 bpublic=bpriv.public_key()
-bpublicbytes=bpublic.public_bytes(
-    encoding=Encoding.Raw,
-    format=PublicFormat.Raw
-)
+bpublicbytes=bpublic.public_bytes(encoding=Encoding.Raw,format=PublicFormat.Raw)
 connection.sendall(bpublicbytes)
 apublicbytes=connection.recv(32)
 apublic=X25519PublicKey.from_public_bytes(apublicbytes)
